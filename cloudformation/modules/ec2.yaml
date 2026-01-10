@@ -42,6 +42,14 @@ Parameters:
     #   - t2.medium
     # ConstraintDescription: must be a valid EC2 instance type.
 
+  PublicInstanceName:
+    Description: Name tag for Public EC2 Instance
+    Type: String
+
+  PrivateInstanceName:
+    Description: Name tag for Private EC2 Instance
+    Type: String
+
 Resources:
   Ec2Public:
     Type: AWS::EC2::Instance
@@ -49,30 +57,23 @@ Resources:
       ImageId: !Ref AmiId
       InstanceType: !Ref InstanceType
       KeyName: !Ref MyKeyPair
-      NetworkInterfaces: 
-        - AssociatePublicIpAddress: "true"
-          DeviceIndex: "0"
-          SubnetId: !Ref PublicSubnetId
-          GroupSet: 
-            - !Ref PublicSGID
+      SubnetId: !Ref PublicSubnetId
+      SecurityGroupIds: 
+        - !Ref PublicSGID
       Tags:
         - Key: Name
-          Value: ec2-public-group09
+          Value: !Ref PublicInstanceName
 
   Ec2Private:
     Type: AWS::EC2::Instance
     Properties:
-      ImageId: ami-0c398cb65a93047f2
+      ImageId: !Ref AmiId
       InstanceType: !Ref InstanceType
       KeyName: !Ref MyKeyPair
-      NetworkInterfaces: 
-        - AssociatePublicIpAddress: "false"  
-          DeviceIndex: "0"
-          DeleteOnTermination: "true"
-          SubnetId: !Ref PrivateSubnetId
-          GroupSet: 
-            - !Ref PrivateSGID
+      SubnetId: !Ref PrivateSubnetId
+      SecurityGroupIds: 
+        - !Ref PrivateSGID
       Tags:
         - Key: Name
-          Value: ec2-private-group09
+          Value: !Ref PrivateInstanceName
   
