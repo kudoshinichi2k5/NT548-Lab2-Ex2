@@ -57,6 +57,7 @@ Resources:
       VpcId: !Ref Vpc
       CidrBlock: !Ref PublicSubnetCidr
       AvailabilityZone: !Ref Zone
+      MapPublicIpOnLaunch: true
       Tags: 
         - Key: Name
           Value: public-subnet-group09
