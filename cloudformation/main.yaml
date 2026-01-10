@@ -2,19 +2,16 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: Root Stack - Deploy Group09 Infrastructure (VPC, Route, SG, NAT, EC2) using Nested Stacks
 
 Parameters:
-  # 1. Đường dẫn S3 chứa các file yaml modules
   TemplateBaseURL:
     Type: String
     Description: URL folder S3 chua cac file yaml
-    Default: https://nt548-cloudformation-templates.s3.ap-southeast-1.amazonaws.com/lab2/module
+    Default: https://nt548-cloudformation.s3.us-east-1.amazonaws.com/modules
 
-  # 2. Key Pair (Bắt buộc cho EC2)
   KeyName:
     Description: Name of an existing EC2 KeyPair to enable SSH access
     Type: AWS::EC2::KeyPair::KeyName
     Default: 2352xxxx
 
-  # 3. IP được phép SSH (Cho Security Group)
   AllowedSSHIP:
     Description: IP to ssh
     Type: String
@@ -36,7 +33,6 @@ Parameters:
     ConstraintDescription: must be a valid EC2 instance type.
 
 Resources:
-  # --- STACK 1: VPC (Nền móng) ---
   VPCStack:
     Type: AWS::CloudFormation::Stack
     Properties:
@@ -47,14 +43,12 @@ Resources:
         PrivateSubnetCidr: 10.9.2.0/24
         Zone: us-east-1a
 
-  # --- STACK 2: ROUTE TABLES (Cần VPC & IGW) ---
   RouteTablesStack:
     Type: AWS::CloudFormation::Stack
     DependsOn: VPCStack
     Properties:
       TemplateURL: !Sub "${TemplateBaseURL}/route-table.yaml"
   
-  # --- STACK 3: SECURITY GROUPS (Cần VPC) ---
   SecurityGroupsStack:
     Type: AWS::CloudFormation::Stack
     # DependsOn: VPCStack
@@ -64,18 +58,14 @@ Resources:
         VpcId: !GetAtt VPCStack.Outputs.VpcId 
         SshCidr: !Ref AllowedSSHIP
 
-  # --- STACK 4: NAT GATEWAY (Cần Route Tables để gắn Route) ---
   NATStack:
     Type: AWS::CloudFormation::Stack
-    # Quan trọng: Code NAT của bạn có tạo Route trỏ vào PrivateRT, nên phải đợi RouteTable xong
     DependsOn: RouteTablesStack 
     Properties:
       TemplateURL: !Sub "${TemplateBaseURL}/nat-gateway.yaml"
 
-  # --- STACK 5: EC2 INSTANCES (Chạy cuối cùng) ---
   EC2Stack:
     Type: AWS::CloudFormation::Stack
-    # Đợi NAT xong để Private Instance có thể kết nối Internet ngay khi boot
     DependsOn: NATStack
     Properties:
       TemplateURL: !Sub "${TemplateBaseURL}/ec2.yaml"
@@ -91,7 +81,6 @@ Resources:
         PrivateInstanceName: ec2-private-group09
 
 Outputs:
-  # Lấy thông tin từ Stack con ra ngoài Stack cha để tiện theo dõi
   StackVPCID:
     Description: VPC ID Created
     Value: !GetAtt VPCStack.Outputs.VpcId
