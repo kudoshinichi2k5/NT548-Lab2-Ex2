@@ -1,0 +1,52 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Create Security Groups
+
+Parameters:
+  VpcId:
+    Description: VPC ID where security groups will be created
+    Type: AWS::EC2::VPC::Id
+
+  SshCidr:
+    Description: CIDR block for SSH access
+    Type: String
+    Default: 0.0.0.0/0
+
+Resources:
+  PublicSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allows ssh from anywhere
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: !Ref SshCidr
+      Tags:
+        - Key: Name
+          Value: public-sg-group09
+
+  PrivateSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allows ssh from Public SG
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          SourceSecurityGroupId: !Ref PublicSG  
+      Tags:
+        - Key: Name
+          Value: private-sg-group09
+
+Outputs:
+  PublicSGID: 
+    Value: !Ref PublicSG
+    Export: 
+      Name: Group09PublicSGID
+
+  PrivateSGID:
+    Value: !Ref PrivateSG
+    Export: 
+      Name: Group09PrivateSGID

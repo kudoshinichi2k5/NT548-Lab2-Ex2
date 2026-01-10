@@ -1,0 +1,98 @@
+Parameters:
+  # vpc cidr
+  VpcCIDR:
+    Description: IP range for vpc-group09
+    Type: String
+    Default: 10.9.0.0/16
+  # ip range for public subnet
+  PublicSubnetCidr:
+    Description: IP range for public subnet
+    Type: String
+    Default: 10.9.1.0/24
+  # ip range for private subnet
+  PrivateSubnetCidr:
+    Description: IP range for private subnet
+    Type: String
+    Default: 10.9.2.0/24
+  # zone for subnets
+  Zone:
+    Description: zone that group09 deploy
+    Type: String
+    Default: "us-east-1a"
+
+####################################################
+Resources:
+  # tạo vpc
+  Vpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VpcCIDR
+      EnableDnsSupport: true
+      Tags:
+        - Key: Name
+          Value: vpc-group09
+
+
+  # tạo internet gateway
+  Igw: 
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags: 
+        - Key: Name
+          Value: igw-group09
+
+  # gắn internet gateway vào vpc
+  AttachVpcGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId:
+        Ref: Vpc
+      InternetGatewayId:
+        Ref: Igw
+
+  # tạo public subnet
+  PublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref Vpc
+      CidrBlock: !Ref PublicSubnetCidr
+      AvailabilityZone: !Ref Zone
+      Tags: 
+        - Key: Name
+          Value: public-subnet-group09
+
+  # tạo private subnet
+  PrivateSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: 
+        Ref: Vpc
+      CidrBlock: !Ref PrivateSubnetCidr
+      AvailabilityZone: !Ref Zone
+      Tags: 
+        - Key: Name
+          Value: private-subnet-group09
+
+#########################################333
+Outputs:
+  VpcId: 
+    Value: !Ref Vpc
+    Export: 
+      Name: Group09VpcId
+
+  IgwId: 
+    Value: !Ref Igw
+    Export: 
+      Name: Group09IgwId
+      
+  PublicSubnetId: 
+    Value: !Ref PublicSubnet
+    Export: 
+      Name: Group09PublicSubnetId
+
+  PrivateSubnetId: 
+    Value: !Ref PrivateSubnet
+    Export:
+      Name: Group09PrivateSubnetId 
+          
+  

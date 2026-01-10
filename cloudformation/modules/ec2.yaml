@@ -1,0 +1,43 @@
+AWSTemplateFormatVersion: 2010-09-09
+#Create EC2 Instances in Public and Private Subnets
+
+Parameters:
+  MyKeyPair:
+    Description: Chon Key Pair de SSH vao EC2
+    Type: AWS::EC2::KeyPair::KeyName
+    Default: 2352xxxx
+
+Resources:
+  Ec2Public:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-0c398cb65a93047f2
+      InstanceType: t2.micro
+      KeyName: !Ref MyKeyPair
+      NetworkInterfaces: 
+        - AssociatePublicIpAddress: "true"
+          DeviceIndex: "0"
+          SubnetId: !ImportValue Group09PublicSubnetId
+          GroupSet: 
+            - !ImportValue Group09PublicSGID
+      Tags:
+        - Key: Name
+          Value: ec2-public-group09
+
+  Ec2Private:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-0c398cb65a93047f2
+      InstanceType: t2.micro
+      KeyName: !Ref MyKeyPair
+      NetworkInterfaces: 
+        - AssociatePublicIpAddress: "false"  
+          DeviceIndex: "0"
+          DeleteOnTermination: "true"
+          SubnetId: !ImportValue Group09PrivateSubnetId 
+          GroupSet: 
+            - !ImportValue Group09PrivateSGID
+      Tags:
+        - Key: Name
+          Value: ec2-private-group09
+  

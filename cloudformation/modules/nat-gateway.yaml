@@ -1,0 +1,20 @@
+Resources:
+  # Tạo NAT Gateway và tạo route từ Private Routing Table tới NAT Gateway
+  NATGatewayEIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: "vpc"
+  NATGateway:
+   Type: AWS::EC2::NatGateway
+   Properties:
+      AllocationId: !GetAtt NATGatewayEIP.AllocationId
+      SubnetId: !ImportValue Group09PublicSubnetId
+      Tags:
+        - Key: Name
+          Value: nat-gateway-group09
+  RouteNATGateway:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !ImportValue Group09PrivateRTId
+      DestinationCidrBlock: '0.0.0.0/0'
+      NatGatewayId: !Ref NATGateway

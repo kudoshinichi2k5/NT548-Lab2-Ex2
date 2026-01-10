@@ -1,0 +1,51 @@
+Resources:
+  # Tạo Public Routing Table
+  PublicRoutingTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !ImportValue Group09VpcId
+      Tags:
+        - Key: Name
+          Value: public-routing-table-group09
+  
+  # Kết nối Public Routing Table với Internet Gateway
+  PublicRoutingTableIgw:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PublicRoutingTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !ImportValue Group09IgwId
+
+  # Kết nối Public Subnet với Public Routing Table
+  AssociatePublicSubnetPublicRoutingTable:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !ImportValue Group09PublicSubnetId
+      RouteTableId: !Ref PublicRoutingTable
+  
+  # Tạo Private Routing Table
+  PrivateRoutingTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !ImportValue Group09VpcId
+      Tags: 
+        - Key: Name
+          Value: private-routing-table-group09
+  
+  # Kết nối Private Subnet tới Private Routing Table
+  AssociatePrivateSubnetPrivateRoutingTable:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !ImportValue Group09PrivateSubnetId
+      RouteTableId: !Ref PrivateRoutingTable
+    
+Outputs: 
+  PublicRTId: 
+    Value: !Ref PublicRoutingTable
+    Export: 
+      Name: Group09PublicRTId
+
+  PrivateRTId:
+    Value: !Ref PrivateRoutingTable
+    Export: 
+      Name: Group09PrivateRTId
