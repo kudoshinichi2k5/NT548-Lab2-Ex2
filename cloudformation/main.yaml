@@ -75,8 +75,8 @@ Resources:
         InstanceType: !Ref InstanceType
         PublicSubnetId: !GetAtt VPCStack.Outputs.PublicSubnetId
         PrivateSubnetId: !GetAtt VPCStack.Outputs.PrivateSubnetId
-        PublicSGId: !GetAtt SecurityGroupsStack.Outputs.PublicSGID
-        PrivateSGId: !GetAtt SecurityGroupsStack.Outputs.PrivateSGID
+        PublicSGID: !GetAtt SecurityGroupsStack.Outputs.PublicSGID
+        PrivateSGID: !GetAtt SecurityGroupsStack.Outputs.PrivateSGID
         PublicInstanceName: ec2-public-group09
         PrivateInstanceName: ec2-private-group09
 
