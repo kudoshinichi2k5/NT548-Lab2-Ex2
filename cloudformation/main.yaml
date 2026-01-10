@@ -57,7 +57,7 @@ Resources:
   # --- STACK 3: SECURITY GROUPS (Cần VPC) ---
   SecurityGroupsStack:
     Type: AWS::CloudFormation::Stack
-    DependsOn: VPCStack
+    # DependsOn: VPCStack
     Properties:
       TemplateURL: !Sub "${TemplateBaseURL}/security-group.yaml"
       Parameters:
@@ -76,7 +76,7 @@ Resources:
   EC2Stack:
     Type: AWS::CloudFormation::Stack
     # Đợi NAT xong để Private Instance có thể kết nối Internet ngay khi boot
-    DependsOn: [NATStack, SecurityGroupsStack]
+    DependsOn: NATStack
     Properties:
       TemplateURL: !Sub "${TemplateBaseURL}/ec2.yaml"
       Parameters:
