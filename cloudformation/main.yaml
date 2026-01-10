@@ -25,6 +25,16 @@ Parameters:
     Type: AWS::EC2::Image::Id
     Default: ami-0c398cb65a93047f2  # Amazon Linux 2 in us-east-1
 
+  InstanceType:
+    Description: EC2 Instance Type
+    Type: String
+    Default: t2.micro
+    AllowedValues:
+      - t2.micro
+      - t2.small
+      - t2.medium
+    ConstraintDescription: must be a valid EC2 instance type.
+
 Resources:
   # --- STACK 1: VPC (Nền móng) ---
   VPCStack:
@@ -72,6 +82,7 @@ Resources:
       Parameters:
         MyKeyPair: !Ref KeyName
         AmiId: !Ref AmiId
+        InstanceType: !Ref InstanceType
         PublicSubnetId: !GetAtt VPCStack.Outputs.PublicSubnetId
         PrivateSubnetId: !GetAtt VPCStack.Outputs.PrivateSubnetId
         PublicSGId: !GetAtt SecurityGroupsStack.Outputs.PublicSGID

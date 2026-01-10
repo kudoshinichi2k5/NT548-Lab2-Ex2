@@ -32,12 +32,22 @@ Parameters:
     Type: AWS::EC2::SecurityGroup::Id
     # Default: !ImportValue Group09PrivateSGID
 
+  InstanceType:
+    Description: EC2 Instance Type
+    Type: String
+    # Default: t2.micro
+    # AllowedValues:
+    #   - t2.micro
+    #   - t2.small
+    #   - t2.medium
+    # ConstraintDescription: must be a valid EC2 instance type.
+
 Resources:
   Ec2Public:
     Type: AWS::EC2::Instance
     Properties:
       ImageId: !Ref AmiId
-      InstanceType: t2.micro
+      InstanceType: !Ref InstanceType
       KeyName: !Ref MyKeyPair
       NetworkInterfaces: 
         - AssociatePublicIpAddress: "true"
@@ -53,7 +63,7 @@ Resources:
     Type: AWS::EC2::Instance
     Properties:
       ImageId: ami-0c398cb65a93047f2
-      InstanceType: t2.micro
+      InstanceType: !Ref InstanceType
       KeyName: !Ref MyKeyPair
       NetworkInterfaces: 
         - AssociatePublicIpAddress: "false"  
