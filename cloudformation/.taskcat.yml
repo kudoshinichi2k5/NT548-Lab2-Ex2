@@ -1,0 +1,15 @@
+project:
+  name: nt548-lab2
+  regions:
+    - us-east-1
+  s3_bucket: nt548-taskcat-templates
+
+tests:
+  group09-test:
+    template: main.yaml
+    parameters:
+      TemplateBaseURL: https://nt548-cloudformation.s3.us-east-1.amazonaws.com/modules
+      KeyName: 2352xxxx
+      AllowedSSHIP: 0.0.0.0/0
+      InstanceType: t2.micro
+      AmiId: ami-0c398cb65a93047f2
