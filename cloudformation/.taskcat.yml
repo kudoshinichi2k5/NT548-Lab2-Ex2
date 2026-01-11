@@ -6,7 +6,7 @@ project:
 
 tests:
   group09-test:
-    template: main.yaml
+    template: cloudformation/main.yaml
     parameters:
       TemplateBaseURL: https://nt548-cloudformation.s3.us-east-1.amazonaws.com/modules
       KeyName: 2352xxxx

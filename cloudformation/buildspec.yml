@@ -1,0 +1,34 @@
+version: 0.2
+
+env:
+  shell: bash
+  variables:
+    AWS_DEFAULT_REGION: us-east-1
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.11
+    commands:
+      - echo "Installing tools..."
+      - pip install --upgrade pip
+      - pip install cfn-lint taskcat==0.9.38
+
+  pre_build:
+    commands:
+      - echo "Running cfn-lint..."
+      - cfn-lint -f pretty cloudformation/main.yaml
+      - cfn-lint -f pretty cloudformation/modules/*.yaml
+
+  build:
+    commands:
+      - echo "Running taskcat tests..."
+      - taskcat test run
+
+  post_build:
+    commands:
+      - echo "Build and test completed successfully."
+
+artifacts:
+  files:
+    - '**/*'
