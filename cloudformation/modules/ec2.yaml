@@ -5,42 +5,30 @@ Parameters:
   MyKeyPair:
     Description: Chon Key Pair de SSH vao EC2
     Type: AWS::EC2::KeyPair::KeyName
-    # Default: 2352xxxx
 
   AmiId:
     Description: AMI ID for EC2 Instances
     Type: AWS::EC2::Image::Id
-    # Default: ami-0c398cb65a93047f2  # Amazon Linux 2 in us-east-1
 
   PublicSubnetId:
     Description: Subnet ID for Public EC2
     Type: AWS::EC2::Subnet::Id
-    # Default: !ImportValue Group09PublicSubnetId
   
   PrivateSubnetId:
     Description: Subnet ID for Private EC2
     Type: AWS::EC2::Subnet::Id
-    # Default: !ImportValue Group09PrivateSubnetId
 
   PublicSGID:
     Description: Security Group ID for Public EC2
     Type: AWS::EC2::SecurityGroup::Id
-    # Default: !ImportValue Group09PublicSGID
 
   PrivateSGID:
     Description: Security Group ID for Private EC2
     Type: AWS::EC2::SecurityGroup::Id
-    # Default: !ImportValue Group09PrivateSGID
 
   InstanceType:
     Description: EC2 Instance Type
     Type: String
-    # Default: t2.micro
-    # AllowedValues:
-    #   - t2.micro
-    #   - t2.small
-    #   - t2.medium
-    # ConstraintDescription: must be a valid EC2 instance type.
 
   PublicInstanceName:
     Description: Name tag for Public EC2 Instance

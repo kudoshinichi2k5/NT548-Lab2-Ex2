@@ -9,7 +9,6 @@ Parameters:
   SshCidr:
     Description: CIDR block for SSH access
     Type: String
-    Default: 0.0.0.0/0
 
 Resources:
   PublicSG:
