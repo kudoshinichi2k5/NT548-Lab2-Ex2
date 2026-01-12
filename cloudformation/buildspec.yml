@@ -12,13 +12,13 @@ phases:
     commands:
       - echo "Installing tools..."
       - pip install --upgrade pip
-      - pip install cfn-lint taskcat==0.9.38
+      - pip install cfn-lint taskcat
 
   pre_build:
     commands:
       - echo "Running cfn-lint..."
-      - cfn-lint -f pretty cloudformation/main.yaml
-      - cfn-lint -f pretty cloudformation/modules/*.yaml
+      - cfn-lint -f pretty main.yaml
+      - cfn-lint -f pretty modules/*.yaml
 
   build:
     commands:
