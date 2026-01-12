@@ -13,12 +13,10 @@ Parameters:
   PublicSGName:
     Description: Name tag for Public Security Group
     Type: String
-    Default: public-sg-group09
 
   PrivateSGName:
     Description: Name tag for Private Security Group
     Type: String
-    Default: private-sg-group09
 
 Resources:
   PublicSG:
