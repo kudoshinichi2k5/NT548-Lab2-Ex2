@@ -10,6 +10,16 @@ Parameters:
     Description: CIDR block for SSH access
     Type: String
 
+  PublicSGName:
+    Description: Name tag for Public Security Group
+    Type: String
+    Default: public-sg-group09
+
+  PrivateSGName:
+    Description: Name tag for Private Security Group
+    Type: String
+    Default: private-sg-group09
+
 Resources:
   PublicSG:
     Type: AWS::EC2::SecurityGroup
@@ -23,7 +33,7 @@ Resources:
           CidrIp: !Ref SshCidr
       Tags:
         - Key: Name
-          Value: public-sg-group09
+          Value: !Ref PublicSGName
 
   PrivateSG:
     Type: AWS::EC2::SecurityGroup
@@ -37,7 +47,7 @@ Resources:
           SourceSecurityGroupId: !Ref PublicSG  
       Tags:
         - Key: Name
-          Value: private-sg-group09
+          Value: !Ref PrivateSGName
 
 Outputs:
   PublicSGID: 
