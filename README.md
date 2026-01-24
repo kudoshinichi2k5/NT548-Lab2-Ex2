@@ -26,6 +26,7 @@ Bài tập này tập trung vào việc **triển khai hạ tầng AWS với Clo
 
 Dự án sử dụng lại các module từ Lab 1 và bổ sung thêm các file cấu hình cho CI/CD.
 
+```text
 NT548-LAB2-EX2/
 ├── cloudformation/
 │   ├── modules/                 # Các CloudFormation Templates thành phần
@@ -38,6 +39,7 @@ NT548-LAB2-EX2/
 │   ├── buildspec.yml            # Script cho CodeBuild
 │   └── main.yaml                # Master stack gọi các nested stacks
 └── README.md
+```
 
 ---
 
